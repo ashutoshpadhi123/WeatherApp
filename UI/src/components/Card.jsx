@@ -11,6 +11,7 @@ const Card = ({ children, bg = 'bg-gray-100' }) => {
     const [city, setCity] = useState('');
     const [show, setShow] = useState(false)
 
+
     const handleClick = () => {
 
         const enteredCity = document.getElementById('city-input').value;
