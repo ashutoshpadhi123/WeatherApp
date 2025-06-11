@@ -34,7 +34,7 @@ namespace WeatherApp.Controllers
             if (weatherData == null) return BadRequest("Invalid weather data.");
 
             // Later: Save to database
-            var log = new WeatherLogs(weatherData.City, weatherData.Temperature, weatherData.Condition);
+            var log = new WeatherLogs(weatherData.City, weatherData.Temperature, weatherData.Condition, weatherData.Humidity, weatherData.FeelsLike, weatherData.Rain);
             return Ok(new { Message = "Weather log saved (mock).", Data = log });
         }
     }
