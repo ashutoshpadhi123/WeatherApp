@@ -24,6 +24,7 @@ namespace WeatherApp.Services
             return _config["OpenMeteo:WeatherUrl"];
         }
 
+        //calling function to get API response
         public async Task<JsonDocument?> GetApiResponseAsync(string url)
         {
             var response = await _httpClient.GetAsync(url);
@@ -53,12 +54,20 @@ namespace WeatherApp.Services
             if (coords == null) return null;
 
             var (lat, lon) = coords.Value;
-            var weatherUrl = GetWeatherUrl() + $"?latitude={lat}&longitude={lon}&current=temperature_2m";
+            var weatherUrl = GetWeatherUrl() + $"?latitude={lat}&longitude={lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,rain";
             var response = await GetApiResponseAsync(weatherUrl);
             if (response == null) return null;
 
-            var temp = response.RootElement.GetProperty("current").GetProperty("temperature_2m").GetSingle();
-            return new WeatherDetails(city, temp, "Default");
+            // var temp = response.RootElement.GetProperty("current").GetProperty("temperature_2m").GetSingle();
+            // return new WeatherDetails(city, temp, "Default");
+            var current = response.RootElement.GetProperty("current");
+
+            var temp = current.GetProperty("temperature_2m").GetSingle();
+            var humidity = current.GetProperty("relative_humidity_2m").GetSingle();
+            var feelsLike = current.GetProperty("apparent_temperature").GetSingle();
+            var rain = current.GetProperty("rain").GetSingle();
+
+            return new WeatherDetails(city, temp, "Default", humidity, feelsLike, rain);
         }
     }
 }
