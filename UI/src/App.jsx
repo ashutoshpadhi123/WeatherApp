@@ -1,16 +1,31 @@
 import React from 'react'
-import NavigationBar from './components/NavigationBar.jsx'
-import Banner from './components/Banner.jsx'
-import Card from './components/Card.jsx'
-import WeatherResult from './components/WeatherResult.jsx'
-const App = () => {
-  return (
-    <>
-      <NavigationBar />
-      <Banner />
-      <Card />
-    </>
+import HomePage from './pages/HomePage.jsx';
+import Countries from './pages/Countries.jsx';
+import Cities from './pages/Cities.jsx';
+import {
+  Route,
+  createRoutesFromElements,
+  RouterProvider,
+  createBrowserRouter,
+
+} from 'react-router-dom'
+import MainLayout from './Layouts/MainLayout.jsx';
+
+
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path='/' element={<MainLayout />}>
+      <Route index element={<HomePage />} />
+      <Route path='/countries' element={<Countries />} />
+      <Route path='/cities' element={<Cities />} />
+    </Route>
   )
+);
+
+const App = () => {
+  return <RouterProvider router={router} />;
+
+
 }
 
 export default App
